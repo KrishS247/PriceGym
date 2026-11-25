@@ -1,0 +1,62 @@
+# PriceGym Default Configuration
+# Market, Demand Elasticity, Reward Shaping, and RL Hyperparameters
+
+env:
+  episode_days: 90
+  initial_inventory: 500
+  min_price: 20.0
+  max_price: 100.0
+  ref_price: 60.0
+  unit_cost: 25.0
+
+demand:
+  base_demand: 6.5
+  elasticity: 1.85
+  cross_elasticity: 0.75
+  # Seasonality multipliers
+  weekly_amplitude: 0.18
+  seasonal_amplitude: 0.25
+  # Demand shock parameters (Log-normal / Gaussian clip)
+  shock_std: 0.08
+  shock_min: 0.75
+  shock_max: 1.25
+  # Competitor price dynamics (Ornstein-Uhlenbeck / mean-reverting walk + promo shocks)
+  comp_mean_reversion: 0.20
+  comp_volatility: 2.0
+  comp_promo_prob: 0.08
+  comp_promo_discount: 0.20
+
+reward:
+  volatility_penalty: 12.0
+  holding_cost_per_unit: 0.03
+  dead_stock_penalty: 8.0
+  reward_scale: 100.0
+
+rl:
+  ppo:
+    learning_rate: 0.0003
+    n_steps: 512
+    batch_size: 128
+    n_epochs: 10
+    gamma: 0.995
+    gae_lambda: 0.95
+    clip_range: 0.2
+    ent_coef: 0.005
+    vf_coef: 0.5
+    max_grad_norm: 0.5
+    net_arch: [128, 128]
+  sac:
+    learning_rate: 0.0003
+    buffer_size: 100000
+    learning_starts: 1000
+    batch_size: 256
+    tau: 0.005
+    gamma: 0.995
+    train_freq: 1
+    gradient_steps: 1
+    net_arch: [128, 128]
+
+evaluation:
+  n_episodes: 500
+  holdout_seed_start: 10000
+
